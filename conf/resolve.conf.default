@@ -10,7 +10,7 @@ magic_number = f9beb4d9
 db = 0
 
 # Print debug output
-debug = False
+debug = True
 
 # Redis TTL for cached hostname and GeoIP data
 ttl = 86400

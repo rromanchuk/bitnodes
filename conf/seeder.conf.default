@@ -10,7 +10,7 @@ port = 8333
 db = 0
 
 # Print debug output
-debug = False
+debug = True
 
 # Relative path to directory containing timestamp-prefixed JSON export files
 export_dir = data/export/f9beb4d9
