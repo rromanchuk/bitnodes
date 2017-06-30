@@ -151,7 +151,7 @@ from cStringIO import StringIO
 from io import SEEK_CUR
 from operator import itemgetter
 
-MAGIC_NUMBER = "\xF9\xBE\xB4\xD9"
+MAGIC_NUMBER = "\xFB\xC0\xB6\xDB"
 PORT = 8333
 MIN_PROTOCOL_VERSION = 70001
 PROTOCOL_VERSION = 70015
