@@ -19,6 +19,7 @@ seeders =
     dnsseed.litecointools.com
     dnsseed.litecoinpool.org
     dnsseed.koin-project.com
+    dnsseed.ltc.xurious.com
 # --- testnet3 ---
 #seeders =
 #    seed-b.litecoin.loshan.co.uk
@@ -28,7 +29,7 @@ seeders =
 workers = 500
 
 # Print debug output
-debug = True
+debug = False
 
 # Public IP address for network interface
 source_address = 0.0.0.0
@@ -43,7 +44,7 @@ protocol_version = 70015
 # crawler. This is so that users will not confuse your crawler with another
 # instance that is already running and generating data for the project.
 # -----------------------------------------------------------------------------
-user_agent = /litenodes:1.0/
+user_agent = /litenodes.net:1.0/
 
 # Services to use for outgoing network address message
 services = 0
@@ -68,7 +69,7 @@ ipv6 = True
 
 # Limit max. nodes per IPv6 network prefix
 ipv6_prefix = 64
-nodes_per_ipv6_prefix = 1
+nodes_per_ipv6_prefix = 200
 
 # List of excluded IPv4 networks
 exclude_ipv4_networks =
@@ -102,7 +103,7 @@ exclude_ipv6_networks =
 exclude_ipv4_bogons = True
 
 # Attempt to establish connection with .onion nodes
-onion = False
+onion = True
 
 # Tor proxy is required to connect to .onion address
 tor_proxy = 127.0.0.1:9050
@@ -130,8 +131,9 @@ onion_nodes =
     xdnigz4qn5dbbw2t.onion
     zy3kdqowmrb7xm7h.onion
 
-# Include reachable nodes from https://bitnodes.earn.com/#join-the-network
-include_checked = False
+
+# Include reachable nodes from https://bitnodes.21.co/#join-the-network
+include_checked = True
 
 # Relative path to directory containing timestamp-prefixed JSON crawl files
 crawl_dir = data/crawl/f9beb4d9

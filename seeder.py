@@ -112,7 +112,7 @@ class Seeder(object):
             template = open(CONF['template'], "r") \
                 .read() \
                 .replace("1501826735", serial) \
-                .replace("seed.bitnodes.io.", zone.replace("zone", ""))
+                .replace("seed.litenodes.net.", zone.replace("zone", ""))
             content = "".join([
                 template,
                 wildcard,
@@ -300,7 +300,7 @@ def main(argv):
     if CONF['debug']:
         loglevel = logging.DEBUG
 
-    logformat = ("%(asctime)s,%(msecs)05.1f %(levelname)s (%(funcName)s) "
+    logformat = ("%(filename)s %(lineno)d  %(levelname)s (%(funcName)s) "
                  "%(message)s")
     logging.basicConfig(level=loglevel,
                         format=logformat,
@@ -310,7 +310,6 @@ def main(argv):
 
     global REDIS_CONN
     REDIS_CONN = new_redis_conn(db=CONF['db'])
-
     cron()
 
     return 0

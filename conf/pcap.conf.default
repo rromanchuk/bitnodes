@@ -10,13 +10,13 @@ magic_number = f9beb4d9
 db = 0
 
 # Print debug output
-debug = True
+debug = False
 
 # Redis TTL for cached messages
 ttl = 10800
 
 # Number of round-trip time (RTT) values to keep for each node
-rtt_count = 36
+rtt_count = 15
 
 # Tor proxy
 tor_proxy = 127.0.0.1:9050
