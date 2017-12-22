@@ -1,0 +1,122 @@
+- name: Create deployment directory
+  become: yes
+  file: path={{deploy_directory}} state=directory owner=ubuntu group=ubuntu
+
+- name: Make .litecoin conf directories
+  file: path=/home/ubuntu/{{item}} state=directory owner=ubuntu group=ubuntu
+  with_items:
+    - .litecoin
+
+- name: Remove useless packages from the cache
+  become: yes
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  become: yes
+  apt:
+    autoremove: yes
+
+- name: Add letsencrypt repo
+  become: yes
+  apt_repository:
+    repo: ppa:certbot/certbot
+    state: present
+  tags: package
+
+- name: Add ansible repository
+  become: yes
+  apt_repository:
+    repo: ppa:ansible/ansible
+    state: present
+
+- name: Add bitcoin repository
+  become: yes
+  apt_repository:
+    repo: ppa:bitcoin/bitcoin
+    state: present
+
+- name: Update cache
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Install let's encrypt
+  become: yes
+  apt:
+    name: python-certbot-nginx
+  tags: package
+
+- name: Install bitcoin libdb
+  become: yes
+  apt:
+    name: libdb4.8-dev
+  tags: package
+
+- name: Install bitcoin libdb
+  become: yes
+  apt:
+    name: libdb4.8++-dev
+  tags: package
+
+
+- name: Install app dependencies
+  become: yes
+  action: apt pkg={{item}} state=installed
+  with_items:
+    - git
+    - build-essential
+    - libtool
+    - autotools-dev
+    - automake
+    - libssl-dev
+    - libevent-dev
+    - bsdmainutils
+    - libboost-all-dev
+    - python-dev
+    - python-pip
+    - libdb4.8-dev
+    - libdb4.8++-dev
+    - libzmq3-dev
+  tags: package
+
+- name: Install global python requirements
+  pip: name={{item}} state=present
+  with_items:
+    - dpkt
+    - gevent
+    - ipaddress
+    - pygeoip
+    - PySocks
+    - redis
+    - requests
+
+
+- name: Set authorized keys for ryan
+  authorized_key:
+    user: ubuntu
+    state: present
+    key: https://github.com/rromanchuk.keys
+
+- name: "Download latest bitnodes"
+  git:
+    repo: 'https://github.com/rromanchuk/bitnodes.git'
+    dest: /home/ubuntu/bitnodes
+    clone: yes
+    force: yes
+
+
+- name: Add litecoin.conf to .litecoin
+  template: src=litecoin.conf.j2 dest=/home/ubuntu/.litecoin/litecoin.conf force=yes
+
+- name: Add litecore-node.json to .litecoin
+  template: src=litecore-node.json.j2 dest=/home/ubuntu/.litecoin/litecore-node.json force=yes
+
+- name: "Add special litecored bash script"
+  copy:
+    src: start_litecore.sh
+    dest: /home/ubuntu/start_litecore.sh
+    owner: ubuntu
+    group: ubuntu
+    mode: 0775
+

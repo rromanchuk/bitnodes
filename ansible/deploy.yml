@@ -1,0 +1,60 @@
+- name: Provision litenodes
+  hosts: webservers
+  vars_files:
+    - "secrets.yml"
+  vars:
+    deploy_directory: /var/www/litenodes
+    crawler_director: /home/ubuntu/bitnodes
+    rbenv:
+      env: user
+      version: v1.0.0
+      default_ruby: 2.4.2
+      ruby_version: 2.4.2
+      rubies:
+        - version: 2.4.2
+  roles:
+    - role: zzet.rbenv
+      tags: rbenv
+    - role: deploy
+      tags: deploy
+    - role: redis
+      redis_version: 4.0.6
+      redis_socket_path: /tmp/redis.sock
+      redis_socket_perm: 755
+      become: yes
+      tags: redis
+    - role: nvm
+      tags: nvm
+    - role: logrotate
+      tags: logrotate
+      ignore_errors: true
+      become: yes
+      logrotate_scripts:
+        - name: litenodes-crawler
+          path: "{{crawler_director}}/log/*.log"
+          options:
+            - weekly
+            - size 25M
+            - missingok
+            - compress
+            - delaycompress
+            - copytruncate
+        - name: rails
+          path: "{{deploy_directory}}/shared/log/*.log"
+          options:
+            - weekly
+            - size 25M
+            - missingok
+            - compress
+            - delaycompress
+            - copytruncate
+    - role: bash_aliases
+      aliases_shell: bash
+      aliases_user: ubuntu
+      aliases_aliases:
+        - "alias rc='cd /var/www/litenodes/current && RAILS_ENV=production bin/rails c'"
+        - "alias t='tail -f -n400 /var/www/litenodes/shared/log/production.log'"
+        - "alias shared='cd /var/www/litenodes/current'"
+        - "alias blog='tail -f -n400 /home/ubuntu/.litecoin/debug.log'"
+        - "alias tpcap='tail -f -n400 /home/ubuntu/bitnodes/log/pcap.fbc0b6db.log'"
+        - "alias tcrawl='tail -f -n400 /home/ubuntu/bitnodes/log/crawl.fbc0b6db.log'"

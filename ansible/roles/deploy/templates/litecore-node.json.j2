@@ -1,0 +1,21 @@
+{
+  "network": "livenet",
+  "port": 3001,
+  "services": [
+    "bitcoind",
+    "insight-lite-api",
+    "insight-lite-ui",
+    "web"
+  ],
+  "servicesConfig": {
+    "bitcoind": {
+      "connect": [{
+  "rpcport": "9332",
+        "rpcuser": "{{rpcuser}}",
+        "rpcpassword": "{{rpcpassword}}",
+        "zmqpubrawtx": "tcp://127.0.0.1:29332",
+        "zmqpubhashblock": "tcp://127.0.0.1:29332"
+      }]
+    }
+  }
+}

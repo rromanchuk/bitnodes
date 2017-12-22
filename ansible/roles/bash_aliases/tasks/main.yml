@@ -1,0 +1,18 @@
+---
+- name: Configure ~/.{{ aliases_shell }}_aliases
+  become: yes
+  become_user: "{{ aliases_user }}"
+  lineinfile: >
+    dest=~/.{{ aliases_shell }}_aliases
+    line="{{ item }}"
+    create=yes
+    state=present
+  with_items: "{{ aliases_aliases }}"
+
+- name: If zsh add load source into .zshrc
+  lineinfile: >
+    dest=~/.zshrc
+    line="if [ -f ~/.zsh_aliases ]; then\n . ~/.zsh_aliases\n fi"
+    state=present
+    backup=yes
+  when: aliases_shell == "zsh"

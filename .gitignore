@@ -8,3 +8,4 @@
 clean.sh
 geoip/*.dat
 rsync.sh
+vault_pass
