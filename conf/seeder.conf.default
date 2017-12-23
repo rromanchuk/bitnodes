@@ -4,7 +4,7 @@
 logfile = log/seeder.fbc0b6db.log
 
 # Default/fallback port number
-port = 8333
+port = 9333
 
 # Redis database number
 db = 0
@@ -19,7 +19,7 @@ export_dir = data/export/fbc0b6db
 min_age = 28800
 
 # Relative path to DNS zone file containing exported nodes in A/AAAA records
-zone_file = data/zone/seed.bitnodes.io.zone
+zone_file = data/zone/seed.litenodes.net.zone
 
 # Initial template for DNS zone file
 template = zone.tmpl

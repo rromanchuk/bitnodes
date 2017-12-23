@@ -10,7 +10,7 @@ magic_number = fbc0b6db
 db = 0
 
 # Max. number of concurrent workers (greenlets) in a pool
-workers = 500
+workers = 2000
 
 # Print debug output
 debug = False
@@ -45,7 +45,7 @@ cron_delay = 10
 
 # Limit max. nodes per IPv6 network prefix
 ipv6_prefix = 64
-nodes_per_ipv6_prefix = 200
+nodes_per_ipv6_prefix = 1
 
 # Redis TTL for cached RTT
 ttl = 10800
