@@ -1,10 +1,11 @@
 [Unit]
-Description=Start litecoin mainnet resolver
+Description=Start litecoin mainnet seeder
 After=redis.service
+
 
 [Service]
 WorkingDirectory=/home/ubuntu/bitnodes
-ExecStart=/home/ubuntu/.virtualenvs/bitnodes/bin/python -u resolve.py resolve.conf.default
+ExecStart=/usr/bin/python -u seeder.py conf/seeder.conf.default
 
 # output goes to /var/log/syslog
 StandardOutput=syslog
@@ -12,12 +13,8 @@ StandardError=syslog
 User=ubuntu
 Group=ubuntu
 
-TimeoutStartSec=5s
-Restart=on-failure
-RestartSec=20s
-
-SyslogIdentifier=resolve
+SyslogIdentifier=seeder
 
 [Install]
 WantedBy=multi-user.target
-
+Alias=seeder.service

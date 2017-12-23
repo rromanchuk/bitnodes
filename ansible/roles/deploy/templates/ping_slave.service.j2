@@ -1,0 +1,20 @@
+[Unit]
+Description=Ping script for the litecoin crawler
+After=redis.service ping.service
+
+[Service]
+WorkingDirectory=/home/ubuntu/bitnodes
+ExecStart=/usr/bin/python -u ping.py conf/ping.conf.default slave
+
+# output goes to /var/log/syslog
+StandardOutput=syslog
+StandardError=syslog
+User=ubuntu
+Group=ubuntu
+
+# This will default to "bundler" if we don't specify it
+SyslogIdentifier=ping_slave
+
+[Install]
+WantedBy=multi-user.target
+#Alias=ping_slave.service

@@ -1,10 +1,9 @@
 [Unit]
-Description=Start tcpdump for litecoin network traffic
-
+Description=Start litecoin mainnet resolver
 
 [Service]
 WorkingDirectory=/home/ubuntu/bitnodes
-ExecStart=/bin/bash start_tcpdump.sh
+ExecStart=/usr/bin/python -u resolve.py conf/resolve.conf.default
 
 # output goes to /var/log/syslog
 StandardOutput=syslog
@@ -12,11 +11,8 @@ StandardError=syslog
 User=ubuntu
 Group=ubuntu
 
-TimeoutStartSec=10s
-Restart=on-failure
-RestartSec=20s
-
-SyslogIdentifier=tcpdump
+SyslogIdentifier=resolve
 
 [Install]
 WantedBy=multi-user.target
+Alias=resolve.service

@@ -20,7 +20,7 @@
     - role: redis
       redis_version: 4.0.6
       redis_socket_path: /tmp/redis.sock
-      redis_socket_perm: 755
+      redis_socket_perm: 777
       become: yes
       tags: redis
     - role: nvm

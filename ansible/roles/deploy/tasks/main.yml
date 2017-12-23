@@ -120,3 +120,124 @@
     group: ubuntu
     mode: 0775
 
+- name: Add crawl.service to systemd
+  become: yes
+  template: src=crawl.service.j2 dest=/etc/systemd/system/crawl.service force=yes
+
+- name: Add crawl_slave.service to systemd
+  become: yes
+  template: src=crawl_slave.service.j2 dest=/etc/systemd/system/crawl_slave.service force=yes
+
+- name: Add crawl_slave2.service to systemd
+  become: yes
+  template: src=crawl_slave2.service.j2 dest=/etc/systemd/system/crawl_slave2.service force=yes
+
+- name: Add export.service to systemd
+  become: yes
+  template: src=export.service.j2 dest=/etc/systemd/system/export.service force=yes
+
+- name: Add pcap.service to systemd
+  become: yes
+  template: src=pcap.service.j2 dest=/etc/systemd/system/pcap.service force=yes
+
+- name: Add ping.service to systemd
+  become: yes
+  template: src=ping.service.j2 dest=/etc/systemd/system/ping.service force=yes
+
+- name: Add ping_slave.service to systemd
+  become: yes
+  template: src=ping_slave.service.j2 dest=/etc/systemd/system/ping_slave.service force=yes
+
+- name: Add ping_slave2.service to systemd
+  become: yes
+  template: src=ping_slave2.service.j2 dest=/etc/systemd/system/ping_slave2.service force=yes
+
+- name: Add resolve.service to systemd
+  become: yes
+  template: src=resolve.service.j2 dest=/etc/systemd/system/resolve.service force=yes
+
+- name: Add seeder.service to systemd
+  become: yes
+  template: src=seeder.service.j2 dest=/etc/systemd/system/seeder.service force=yes
+
+- name: Add tcpdump.service to systemd
+  become: yes
+  template: src=tcpdump.service.j2 dest=/etc/systemd/system/tcpdump.service force=yes
+
+
+- name: Enable and start crawl service
+  become: yes
+  service:
+    name: crawl
+    state: started
+    enabled: yes
+
+- name: Enable and start crawl_slave service
+  become: yes
+  service:
+    name: crawl_slave
+    state: started
+    enabled: yes
+
+- name: Enable and start crawl_slave service
+  become: yes
+  service:
+    name: crawl_slave
+    state: started
+    enabled: yes
+
+- name: Enable and start ping service
+  become: yes
+  service:
+    name: ping
+    state: started
+    enabled: yes
+
+- name: Enable and start ping_slave service
+  become: yes
+  service:
+    name: ping_slave
+    state: started
+    enabled: yes
+
+- name: Enable and start ping_slave2 service
+  become: yes
+  service:
+    name: ping_slave2
+    state: started
+    enabled: yes
+
+- name: Enable and start pcap service
+  become: yes
+  service:
+    name: pcap
+    state: started
+    enabled: yes
+
+- name: Enable and start export service
+  become: yes
+  service:
+    name: export
+    state: started
+    enabled: yes
+
+- name: Enable and start resolve service
+  become: yes
+  service:
+    name: resolve
+    state: started
+    enabled: yes
+
+- name: Enable and start seeder service
+  become: yes
+  service:
+    name: seeder
+    state: started
+    enabled: yes
+
+- name: Enable and start tcpdump service
+  become: yes
+  service:
+    name: tcpdump
+    state: started
+    enabled: yes

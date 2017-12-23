@@ -1,10 +1,10 @@
 [Unit]
-Description=Start litecoin mainnet crawler
+Description=Ping script for the litecoin crawler
 After=redis.service
 
 [Service]
 WorkingDirectory=/home/ubuntu/bitnodes
-ExecStart=/home/ubuntu/.virtualenvs/bitnodes/bin/python -u crawl.py crawl.conf.default master
+ExecStart=/usr/bin/python -u ping.py conf/ping.conf.default master
 
 # output goes to /var/log/syslog
 StandardOutput=syslog
@@ -12,13 +12,9 @@ StandardError=syslog
 User=ubuntu
 Group=ubuntu
 
-TimeoutStartSec=5s
-Restart=on-failure
-RestartSec=20s
-
 # This will default to "bundler" if we don't specify it
-SyslogIdentifier=crawl
+SyslogIdentifier=ping
 
 [Install]
 WantedBy=multi-user.target
-
+#Alias=ping.service
