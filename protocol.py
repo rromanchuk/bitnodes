@@ -153,7 +153,7 @@ from io import SEEK_CUR
 from operator import itemgetter
 
 MAGIC_NUMBER = "\xFB\xC0\xB6\xDB"
-PORT = 8333
+PORT = 9333
 MIN_PROTOCOL_VERSION = 70001
 PROTOCOL_VERSION = 70015
 FROM_SERVICES = 0
