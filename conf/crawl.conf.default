@@ -136,4 +136,4 @@ onion_nodes =
 include_checked = True
 
 # Relative path to directory containing timestamp-prefixed JSON crawl files
-crawl_dir = data/crawl/f9beb4d9
+crawl_dir = data/crawl/fbc0b6db
