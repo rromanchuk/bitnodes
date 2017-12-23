@@ -1,13 +1,13 @@
 [crawl]
 
 # Logfile
-logfile = log/crawl.f9beb4d9.log
+logfile = log/crawl.fbc0b6db.log
 
 # Network magic number
-magic_number = f9beb4d9
+magic_number = fbc0b6db
 
 # Default/fallback port number
-port = 8333
+port = 9333
 
 # Redis database number
 db = 0
