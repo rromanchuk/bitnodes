@@ -6,6 +6,6 @@
 /data/
 /tests/
 clean.sh
-geoip/*.dat
+#geoip/*.dat
 rsync.sh
 vault_pass
