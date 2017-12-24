@@ -1,8 +1,9 @@
 #!/bin/bash
+sudo systemctl stop tcpdump
+
 sudo systemctl stop crawl_slave2
 sudo systemctl stop crawl_slave
 sudo systemctl stop crawl
-
 
 sudo systemctl stop ping_slave
 sudo systemctl stop ping_slave2

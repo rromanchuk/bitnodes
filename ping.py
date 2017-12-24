@@ -107,8 +107,9 @@ class Keepalive(object):
             # Sink received messages to flush them off socket buffer
             try:
                 self.conn.get_messages()
-            except socket.timeout:
-                pass
+            except socket.timeout as err:
+                logging.info("get_messages: Closing %s (%s)", self.node, err)
+                break
             except (ProtocolError, ConnectionError, socket.error) as err:
                 logging.info("get_messages: Closing %s (%s)", self.node, err)
                 break
@@ -149,7 +150,7 @@ class Keepalive(object):
             self.conn.inv(inventory=[(2, bestblockhash)])
         except socket.error:
             raise
-        logging.debug("%s (%s)", self.node, bestblockhash)
+        logging.info("%s (%s)", self.node, bestblockhash)
         self.last_bestblockhash = bestblockhash
 
     def send_addr(self):
@@ -198,9 +199,8 @@ def task():
         nodes = REDIS_CONN.incr(cidr_key)
         logging.info("+CIDR %s: %d", cidr, nodes)
         if nodes > CONF['nodes_per_ipv6_prefix']:
-            logging.info("CIDR limit reached: %s", cidr)
             nodes = REDIS_CONN.decr(cidr_key)
-            logging.info("-CIDR %s: %d", cidr, nodes)
+            logging.info("CIDR limit reached: -CIDR %s: %d", cidr, nodes)
             return
 
     if REDIS_CONN.sadd('open', node) == 0:
@@ -231,7 +231,7 @@ def task():
         conn.open()
         handshake_msgs = conn.handshake()
     except (ProtocolError, ConnectionError, socket.error) as err:
-        logging.debug("Closing %s (%s)", node, err)
+        logging.warning("Closing %s (%s)", node, err)
         conn.close()
 
     if len(handshake_msgs) == 0:

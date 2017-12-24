@@ -81,7 +81,7 @@ def enumerate_node(redis_pipe, addr_msgs, now):
                     if not address:
                         continue
                     if is_excluded(address):
-                        logging.debug("Exclude: %s", address)
+                        logging.info("Exclude: %s", address)
                         continue
                     redis_pipe.sadd('pending', (address, port, services))
                     peers += 1
@@ -129,7 +129,7 @@ def connect(redis_conn, key):
         handshake_msgs = conn.handshake()
         addr_msgs = conn.getaddr()
     except (ProtocolError, ConnectionError, socket.error) as err:
-        logging.debug("[CRAWL FAILURE] %s: %s", address, err)
+        logging.error("[CRAWL FAILURE] %s: %s", address, err)
     except:
         logging.error("Unexpected error: %s", sys.exc_info()[0])
     finally:
@@ -160,6 +160,7 @@ def dump(timestamp, nodes):
     Dumps data for reachable nodes into timestamp-prefixed JSON file and
     returns most common height from the nodes.
     """
+    logging.info("Dumping data to json file")
     json_data = []
 
     for node in nodes:
@@ -290,7 +291,7 @@ def task():
             cidr = ip_to_network(node[0], CONF['ipv6_prefix'])
             nodes = redis_conn.incr('crawl:cidr:{}'.format(cidr))
             if nodes > CONF['nodes_per_ipv6_prefix']:
-                logging.debug("CIDR %s: %d", cidr, nodes)
+                logging.warning("Prefix limit reached: CIDR %s: %d", cidr, nodes)
                 continue
 
         connect(redis_conn, key)
