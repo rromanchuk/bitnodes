@@ -306,17 +306,19 @@ def set_pending():
         nodes = []
 
         try:
+            logging.info("Fetching ipv4 seed from seeder file")
             ipv4_nodes = socket.getaddrinfo(seeder, None, socket.AF_INET)
         except socket.gaierror as err:
-            logging.warning("%s", err)
+            logging.warning("Unable to connect to ipv4 seed %s", err)
         else:
             nodes.extend(ipv4_nodes)
 
         if CONF['ipv6']:
             try:
+                logging.info("Fetching ipv6 seed node from seeder file")
                 ipv6_nodes = socket.getaddrinfo(seeder, None, socket.AF_INET6)
             except socket.gaierror as err:
-                logging.warning("[IPV6 FAILED] %s", err)
+                logging.warning("Unable to to connect to ipv6 seed %s", err)
             else:
                 nodes.extend(ipv6_nodes)
 

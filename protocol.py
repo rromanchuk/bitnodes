@@ -145,6 +145,8 @@ import struct
 import sys
 import time
 import re
+import logging
+
 from base64 import b32decode, b32encode
 from binascii import hexlify, unhexlify
 from collections import deque
@@ -962,6 +964,14 @@ def main():
 
     handshake_msgs = []
     addr_msgs = []
+
+    logformat = ("%(filename)s %(lineno)d  %(levelname)s "
+                 "(%(funcName)s) %(message)s")
+    loglevel = logging.DEBUG
+    logging.basicConfig(level=loglevel,
+                    format=logformat,
+                    filename=CONF['logfile'],
+                    filemode='a')
 
     conn = Connection(to_addr, to_services=to_services)
     try:
