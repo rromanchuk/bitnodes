@@ -33,7 +33,7 @@ workers = 400
 debug = False
 
 # Public IP address for network interface
-source_address = 0.0.0.0
+source_address = 34.231.133.189
 
 # Protocol version to use for outgoing version message
 protocol_version = 70015
@@ -70,7 +70,7 @@ ipv6 = True
 
 # Limit max. nodes per IPv6 network prefix
 ipv6_prefix = 64
-nodes_per_ipv6_prefix = 20
+nodes_per_ipv6_prefix = 200
 
 # List of excluded IPv4 networks
 exclude_ipv4_networks =
