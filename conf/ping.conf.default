@@ -32,7 +32,7 @@ protocol_version = 70015
 user_agent = /litenodes.net:1.0/
 
 # Services to use for outgoing network address message
-services = 0
+services = 15
 
 # Set to 1 to receive all txs
 relay = 0
