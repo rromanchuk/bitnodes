@@ -128,9 +128,10 @@ def connect(redis_conn, key):
         conn.open()
         handshake_msgs = conn.handshake()
         addr_msgs = conn.getaddr()
+        logging.info("%s  handshake_msgs: %s, addr_msgs: %s", conn.to_addr, handshake_msgs, addr_msgs)
     except (ProtocolError, ConnectionError, socket.error) as err:
         #logging.error("[CRAWL FAILURE] %s: %s", address, err)
-	pass
+	   pass
     except:
         logging.error("[CRAWL FAILURE] %s", sys.exc_info()[0])
     finally:
@@ -150,10 +151,9 @@ def connect(redis_conn, key):
                          version_msg.get('height', 0))
         now = int(time.time())
         peers = enumerate_node(redis_pipe, addr_msgs, now)
-        logging.info("%s Peers: %d", conn.to_addr, peers)
+        logging.info("[CRAWL SUCCESS] %s Peers: %d", conn.to_addr, peers)
         redis_pipe.set(key, "")
         redis_pipe.sadd('up', key)
-        logging.info("[CRAWL SUCCESS] %s", key)
     redis_pipe.execute()
 
 
@@ -486,8 +486,10 @@ def main(argv):
         redis_pipe = REDIS_CONN.pipeline()
         redis_pipe.delete('up')
         for key in get_keys(REDIS_CONN, 'node:*'):
+            logger.info("Removing: %s", key)
             redis_pipe.delete(key)
         for key in get_keys(REDIS_CONN, 'crawl:cidr:*'):
+            logger.info("Removing: %s", key)
             redis_pipe.delete(key)
         redis_pipe.delete('pending')
         redis_pipe.execute()
