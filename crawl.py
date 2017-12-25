@@ -131,7 +131,7 @@ def connect(redis_conn, key):
     except (ProtocolError, ConnectionError, socket.error) as err:
         logging.error("[CRAWL FAILURE] %s: %s", address, err)
     except:
-        logging.error("Unexpected error: %s", sys.exc_info()[0])
+        logging.error("[CRAWL FAILURE] %s", sys.exc_info()[0])
     finally:
         conn.close()
 
@@ -152,6 +152,7 @@ def connect(redis_conn, key):
         logging.info("%s Peers: %d", conn.to_addr, peers)
         redis_pipe.set(key, "")
         redis_pipe.sadd('up', key)
+        logging.info("[CRAWL SUCCESS] %s", key)
     redis_pipe.execute()
 
 

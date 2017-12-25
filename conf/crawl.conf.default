@@ -20,13 +20,14 @@ seeders =
     dnsseed.litecoinpool.org
     dnsseed.koin-project.com
     dnsseed.ltc.xurious.com
+
 # --- testnet3 ---
 #seeders =
 #    seed-b.litecoin.loshan.co.uk
 #    testnet-seed.litecointools.com
 
 # Number of concurrent workers (greenlets)
-workers = 500
+workers = 200
 
 # Print debug output
 debug = False

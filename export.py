@@ -86,7 +86,9 @@ def export_nodes(nodes, timestamp):
     logging.info("Elapsed: %d", elapsed)
 
     dump = os.path.join(CONF['export_dir'], "{}.json".format(timestamp))
+    rails_dump = os.path.join('data/rails_export/fbc0b6db', "{}.json".format(timestamp))
     open(dump, 'w').write(json.dumps(rows, encoding="latin-1"))
+    open(rails_dump, 'w').write(json.dumps(rows, encoding="latin-1"))
     logging.info("Wrote %s", dump)
 
 
