@@ -27,7 +27,7 @@ seeders =
 #    testnet-seed.litecointools.com
 
 # Number of concurrent workers (greenlets)
-workers = 200
+workers = 400
 
 # Print debug output
 debug = False

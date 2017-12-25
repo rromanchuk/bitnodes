@@ -129,7 +129,8 @@ def connect(redis_conn, key):
         handshake_msgs = conn.handshake()
         addr_msgs = conn.getaddr()
     except (ProtocolError, ConnectionError, socket.error) as err:
-        logging.error("[CRAWL FAILURE] %s: %s", address, err)
+        #logging.error("[CRAWL FAILURE] %s: %s", address, err)
+	pass
     except:
         logging.error("[CRAWL FAILURE] %s", sys.exc_info()[0])
     finally:
