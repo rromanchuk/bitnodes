@@ -83,13 +83,12 @@ def export_nodes(nodes, timestamp):
         rows.append(row)
     end = time.time()
     elapsed = end - start
-    logging.info("Elapsed: %d", elapsed)
 
     dump = os.path.join(CONF['export_dir'], "{}.json".format(timestamp))
     rails_dump = os.path.join('data/rails_export/fbc0b6db', "{}.json".format(timestamp))
     open(dump, 'w').write(json.dumps(rows, encoding="latin-1"))
     open(rails_dump, 'w').write(json.dumps(rows, encoding="latin-1"))
-    logging.info("Wrote %s", dump)
+    logging.info("Writing %s with %d nodes, Elapsed %d", dump, len(nodes), elapsed)
 
 
 def init_conf(argv):
@@ -125,7 +124,7 @@ def main(argv):
     logging.basicConfig(level=loglevel,
                         format=logformat,
                         filename=CONF['logfile'],
-                        filemode='w')
+                        filemode='a')
     print("Log: {}, press CTRL+C to terminate..".format(CONF['logfile']))
 
     global REDIS_CONN

@@ -442,6 +442,7 @@ def main(argv):
         redis_pipe.delete('open')
         redis_pipe.delete('opendata')
         for key in get_keys(REDIS_CONN, 'ping:cidr:*'):
+            logging.info("Deleting %s", key)
             redis_pipe.delete(key)
         redis_pipe.execute()
 

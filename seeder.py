@@ -305,7 +305,7 @@ def main(argv):
     logging.basicConfig(level=loglevel,
                         format=logformat,
                         filename=CONF['logfile'],
-                        filemode='w')
+                        filemode='a')
     print("Log: {}, press CTRL+C to terminate..".format(CONF['logfile']))
 
     global REDIS_CONN

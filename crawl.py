@@ -128,7 +128,6 @@ def connect(redis_conn, key):
         conn.open()
         handshake_msgs = conn.handshake()
         addr_msgs = conn.getaddr()
-        logging.info("%s  handshake_msgs: %s, addr_msgs: %s", conn.to_addr, handshake_msgs, addr_msgs)
     except (ProtocolError, ConnectionError, socket.error) as err:
         #logging.error("[CRAWL FAILURE] %s: %s", address, err)
 	   pass
@@ -151,7 +150,7 @@ def connect(redis_conn, key):
                          version_msg.get('height', 0))
         now = int(time.time())
         peers = enumerate_node(redis_pipe, addr_msgs, now)
-        logging.info("[CRAWL SUCCESS] %s Peers: %d", conn.to_addr, peers)
+        logging.info("[CRAWL SUCCESS] %s Peers: %d, services: %d, handshake_msgs: %s, addr_msgs: %s", conn.to_addr, peers, services, len(handshake_msgs), len(addr_msgs))
         redis_pipe.set(key, "")
         redis_pipe.sadd('up', key)
     redis_pipe.execute()
@@ -162,7 +161,7 @@ def dump(timestamp, nodes):
     Dumps data for reachable nodes into timestamp-prefixed JSON file and
     returns most common height from the nodes.
     """
-    logging.info("Dumping data to json file")
+    logging.info("Dumping %d nodes to json file", len(nodes))
     json_data = []
 
     for node in nodes:
@@ -224,12 +223,11 @@ def restart(timestamp):
     update_excluded_networks()
 
     reachable_nodes = len(nodes)
-    logging.info("Reachable nodes: %d", reachable_nodes)
     REDIS_CONN.lpush('nodes', (timestamp, reachable_nodes))
 
     height = dump(timestamp, nodes)
     REDIS_CONN.set('height', height)
-    logging.info("Height: %d", height)
+    logging.info("Reachable nodes: %d, Height: %d", reachable_nodes, height)
 
 
 def cron():
@@ -292,7 +290,7 @@ def task():
             cidr = ip_to_network(node[0], CONF['ipv6_prefix'])
             nodes = redis_conn.incr('crawl:cidr:{}'.format(cidr))
             if nodes > CONF['nodes_per_ipv6_prefix']:
-                logging.warning("Prefix limit reached: CIDR %s: %d", cidr, nodes)
+                logging.debug("Prefix limit reached: CIDR %s: %d", cidr, nodes)
                 continue
 
         connect(redis_conn, key)
@@ -488,10 +486,10 @@ def main(argv):
         logging.info("Removing up..")
         redis_pipe.delete('up')
         for key in get_keys(REDIS_CONN, 'node:*'):
-            logger.info("Removing: %s", key)
+            logging.info("Removing: %s", key)
             redis_pipe.delete(key)
         for key in get_keys(REDIS_CONN, 'crawl:cidr:*'):
-            logger.info("Removing: %s", key)
+            logging.info("Removing: %s", key)
             redis_pipe.delete(key)
         logging.info("Removing pending..")
         redis_pipe.delete('pending')

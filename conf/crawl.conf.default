@@ -48,7 +48,7 @@ protocol_version = 70015
 user_agent = /litenodes.net:1.0/
 
 # Services to use for outgoing network address message
-services = 0
+services = 15
 
 # Set to 1 to receive all txs
 relay = 0
@@ -69,8 +69,8 @@ max_age = 86400
 ipv6 = True
 
 # Limit max. nodes per IPv6 network prefix
-ipv6_prefix = 64
-nodes_per_ipv6_prefix = 20
+ipv6_prefix = 128
+nodes_per_ipv6_prefix = 200
 
 # List of excluded IPv4 networks
 exclude_ipv4_networks =
