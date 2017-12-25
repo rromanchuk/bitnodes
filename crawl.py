@@ -250,8 +250,7 @@ def cron():
             now = int(time.time())
             elapsed = now - start
             REDIS_CONN.set('elapsed', elapsed)
-            logging.info("Elapsed: %d", elapsed)
-            logging.info("Restarting")
+            logging.info("Restarting Elapsed: %d", elapsed)
             restart(now)
             while int(time.time()) - start < CONF['snapshot_delay']:
                 gevent.sleep(1)
@@ -308,8 +307,9 @@ def set_pending():
         nodes = []
 
         try:
-            logging.info("Fetching ipv4 seed from seeder file")
+            logging.info("Fetching ipv4 seed from %s", seeder)
             ipv4_nodes = socket.getaddrinfo(seeder, None, socket.AF_INET)
+            logging.info("ipv4_nodes: %s", ipv4_nodes)
         except socket.gaierror as err:
             logging.warning("Unable to connect to ipv4 seed %s", err)
         else:
@@ -317,8 +317,9 @@ def set_pending():
 
         if CONF['ipv6']:
             try:
-                logging.info("Fetching ipv6 seed node from seeder file")
+                logging.info("Fetching ipv6 seed from %s", seeder)
                 ipv6_nodes = socket.getaddrinfo(seeder, None, socket.AF_INET6)
+                logging.info("ipv6_nodes: %s", ipv6_nodes)
             except socket.gaierror as err:
                 logging.warning("Unable to to connect to ipv6 seed %s", err)
             else:
@@ -484,6 +485,7 @@ def main(argv):
         REDIS_CONN.set('crawl:master:state', "starting")
         logging.info("Removing all keys")
         redis_pipe = REDIS_CONN.pipeline()
+        logging.info("Removing up..")
         redis_pipe.delete('up')
         for key in get_keys(REDIS_CONN, 'node:*'):
             logger.info("Removing: %s", key)
@@ -491,6 +493,7 @@ def main(argv):
         for key in get_keys(REDIS_CONN, 'crawl:cidr:*'):
             logger.info("Removing: %s", key)
             redis_pipe.delete(key)
+        logging.info("Removing pending..")
         redis_pipe.delete('pending')
         redis_pipe.execute()
         set_pending()
