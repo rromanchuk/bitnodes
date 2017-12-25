@@ -128,7 +128,7 @@ def connect(redis_conn, key):
         conn.open()
         handshake_msgs = conn.handshake()
         addr_msgs = conn.getaddr()
-        logging.info("%s  handshake_msgs: %s, addr_msgs: %s", conn.to_addr, handshake_msgs, addr_msgs)
+        logging.info("%s  handshake_msgs: %s, addr_msgs: %s", conn.to_addr, len(handshake_msgs), len(addr_msgs))
     except (ProtocolError, ConnectionError, socket.error) as err:
         #logging.error("[CRAWL FAILURE] %s: %s", address, err)
 	   pass
@@ -162,7 +162,7 @@ def dump(timestamp, nodes):
     Dumps data for reachable nodes into timestamp-prefixed JSON file and
     returns most common height from the nodes.
     """
-    logging.info("Dumping data to json file")
+    logging.info("Dumping %d nodes to json file", len(nodes))
     json_data = []
 
     for node in nodes:
@@ -224,12 +224,11 @@ def restart(timestamp):
     update_excluded_networks()
 
     reachable_nodes = len(nodes)
-    logging.info("Reachable nodes: %d", reachable_nodes)
     REDIS_CONN.lpush('nodes', (timestamp, reachable_nodes))
 
     height = dump(timestamp, nodes)
     REDIS_CONN.set('height', height)
-    logging.info("Height: %d", height)
+    logging.info("Reachable nodes: %d, Height: %d", reachable_nodes, height)
 
 
 def cron():
