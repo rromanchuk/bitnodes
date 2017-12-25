@@ -488,10 +488,10 @@ def main(argv):
         logging.info("Removing up..")
         redis_pipe.delete('up')
         for key in get_keys(REDIS_CONN, 'node:*'):
-            logger.info("Removing: %s", key)
+            logging.info("Removing: %s", key)
             redis_pipe.delete(key)
         for key in get_keys(REDIS_CONN, 'crawl:cidr:*'):
-            logger.info("Removing: %s", key)
+            logging.info("Removing: %s", key)
             redis_pipe.delete(key)
         logging.info("Removing pending..")
         redis_pipe.delete('pending')
