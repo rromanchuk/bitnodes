@@ -970,24 +970,24 @@ def main():
     loglevel = logging.DEBUG
     logging.basicConfig(level=loglevel,
                     format=logformat,
-                    filename=CONF['logfile'],
+                    filename="log/protocol.fbc0b6db.log",
                     filemode='a')
 
     conn = Connection(to_addr, to_services=to_services)
     try:
-        print("open")
+        logging.info("open")
         conn.open()
 
-        print("handshake")
+        logging.info("handshake")
         handshake_msgs = conn.handshake()
 
-        print("getaddr")
+        logging.info("getaddr")
         addr_msgs = conn.getaddr()
 
     except (ProtocolError, ConnectionError, socket.error) as err:
-        print("{}: {}".format(err, to_addr))
+        logging.info("{}: {}".format(err, to_addr))
 
-    print("close")
+    logging.info("close")
     conn.close()
 
     if len(handshake_msgs) > 0:
@@ -995,8 +995,8 @@ def main():
         if services != to_services:
             print('services ({}) != {}'.format(services, to_services))
 
-    print(handshake_msgs)
-    print(addr_msgs)
+    logging.info(handshake_msgs)
+    logging.info(addr_msgs)
 
     return 0
 
