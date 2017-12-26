@@ -128,7 +128,7 @@ def connect(redis_conn, key):
         conn.open()
         handshake_msgs = conn.handshake()
         addr_msgs = conn.getaddr()
-        logging.info("%s  handshake_msgs: %s, addr_msgs: %s", conn.to_addr, len(handshake_msgs), len(addr_msgs))
+        logging.info("%s  services: %d, handshake_msgs: %s, addr_msgs: %s", conn.to_addr, services, len(handshake_msgs), len(addr_msgs))
     except (ProtocolError, ConnectionError, socket.error) as err:
         #logging.error("[CRAWL FAILURE] %s: %s", address, err)
 	   pass
