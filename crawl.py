@@ -128,7 +128,6 @@ def connect(redis_conn, key):
         conn.open()
         handshake_msgs = conn.handshake()
         addr_msgs = conn.getaddr()
-        logging.info("%s  services: %d, handshake_msgs: %s, addr_msgs: %s", conn.to_addr, services, len(handshake_msgs), len(addr_msgs))
     except (ProtocolError, ConnectionError, socket.error) as err:
         #logging.error("[CRAWL FAILURE] %s: %s", address, err)
 	   pass
@@ -151,7 +150,7 @@ def connect(redis_conn, key):
                          version_msg.get('height', 0))
         now = int(time.time())
         peers = enumerate_node(redis_pipe, addr_msgs, now)
-        logging.info("[CRAWL SUCCESS] %s Peers: %d", conn.to_addr, peers)
+        logging.info("[CRAWL SUCCESS] %s Peers: %d, services: %d, handshake_msgs: %s, addr_msgs: %s", conn.to_addr, peers, services, len(handshake_msgs), len(addr_msgs))
         redis_pipe.set(key, "")
         redis_pipe.sadd('up', key)
     redis_pipe.execute()
@@ -291,7 +290,7 @@ def task():
             cidr = ip_to_network(node[0], CONF['ipv6_prefix'])
             nodes = redis_conn.incr('crawl:cidr:{}'.format(cidr))
             if nodes > CONF['nodes_per_ipv6_prefix']:
-                logging.warning("Prefix limit reached: CIDR %s: %d", cidr, nodes)
+                logging.debug("Prefix limit reached: CIDR %s: %d", cidr, nodes)
                 continue
 
         connect(redis_conn, key)

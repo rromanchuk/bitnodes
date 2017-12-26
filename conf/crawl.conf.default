@@ -69,7 +69,7 @@ max_age = 86400
 ipv6 = True
 
 # Limit max. nodes per IPv6 network prefix
-ipv6_prefix = 64
+ipv6_prefix = 128
 nodes_per_ipv6_prefix = 200
 
 # List of excluded IPv4 networks

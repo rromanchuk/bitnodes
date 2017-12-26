@@ -44,8 +44,8 @@ socket_timeout = 30
 cron_delay = 10
 
 # Limit max. nodes per IPv6 network prefix
-ipv6_prefix = 64
-nodes_per_ipv6_prefix = 1
+ipv6_prefix = 128
+nodes_per_ipv6_prefix = 200
 
 # Redis TTL for cached RTT
 ttl = 10800
