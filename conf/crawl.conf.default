@@ -27,7 +27,7 @@ seeders =
 #    testnet-seed.litecointools.com
 
 # Number of concurrent workers (greenlets)
-workers = 400
+workers = 100
 
 # Print debug output
 debug = False
@@ -60,7 +60,7 @@ socket_timeout = 30
 cron_delay = 10
 
 # Take full network snapshot at most at every given interval
-snapshot_delay = 240
+snapshot_delay = 800
 
 # Max. age for peering node to be included in crawl set
 max_age = 86400
