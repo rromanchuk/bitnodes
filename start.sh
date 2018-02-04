@@ -32,10 +32,10 @@
 
 sudo systemctl start crawl
 sudo systemctl start crawl_slave
-sudo systemctl start crawl_slave2
+#sudo systemctl start crawl_slave2
 
 sudo systemctl start ping
-sudo systemctl start ping_slave2
+#sudo systemctl start ping_slave2
 sudo systemctl start ping_slave
 
 sudo systemctl start resolve

@@ -10,7 +10,7 @@ magic_number = fbc0b6db
 db = 0
 
 # Max. number of concurrent workers (greenlets) in a pool
-workers = 500
+workers = 100
 
 # Print debug output
 debug = False
