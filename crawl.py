@@ -127,18 +127,29 @@ def connect(redis_conn, key):
     try:
         conn.open()
         handshake_msgs = conn.handshake()
-        addr_msgs = conn.getaddr()
     except (ProtocolError, ConnectionError, socket.error) as err:
-        #logging.error("[CRAWL FAILURE] %s: %s", address, err)
-	   pass
-    except:
-        logging.error("[CRAWL FAILURE] %s", sys.exc_info()[0])
-    finally:
-        conn.close()
+        logging.debug("%s: %s", conn.to_addr, err)
 
-    gevent.sleep(0.3)
     redis_pipe = redis_conn.pipeline()
     if len(handshake_msgs) > 0:
+        try:
+            conn.getaddr(block=False)
+        except (ProtocolError, ConnectionError, socket.error) as err:
+            logging.debug("%s: %s", conn.to_addr, err)
+        else:
+            addr_wait = 0
+            while addr_wait < CONF['socket_timeout']:
+                addr_wait += 1
+                gevent.sleep(0.3)
+                try:
+                    msgs = conn.get_messages(commands=['addr'])
+                except (ProtocolError, ConnectionError, socket.error) as err:
+                    logging.debug("%s: %s", conn.to_addr, err)
+                    break
+                if msgs and any([msg['count'] > 1 for msg in msgs]):
+                    addr_msgs = msgs
+                    break
+
         version_msg = handshake_msgs[0]
         from_services = version_msg.get('services', 0)
         if from_services != services:
@@ -153,6 +164,7 @@ def connect(redis_conn, key):
         logging.info("[CRAWL SUCCESS] %s Peers: %d, services: %d, handshake_msgs: %s, addr_msgs: %s", conn.to_addr, peers, services, len(handshake_msgs), len(addr_msgs))
         redis_pipe.set(key, "")
         redis_pipe.sadd('up', key)
+    conn.close()
     redis_pipe.execute()
 
 
@@ -496,6 +508,7 @@ def main(argv):
         redis_pipe.execute()
         set_pending()
         update_excluded_networks()
+        REDIS_CONN.set('crawl:master:state', "running")
 
     # Spawn workers (greenlets) including one worker reserved for cron tasks
     workers = []

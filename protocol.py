@@ -475,7 +475,7 @@ class Serializer(object):
         if isinstance(data, str):
             data = StringIO(data)
 
-        msg['version'] = struct.unpack("<I", data.read(4))[0]
+        msg['version'] = unpack("<I", data.read(4))
 
         # Check for BIP144 marker
         marker = data.read(1)
@@ -863,10 +863,14 @@ class Connection(object):
         msg = self.serializer.serialize_msg(command="verack")
         self.send(msg)
 
-    def getaddr(self):
+    def getaddr(self, block=True):
         # [getaddr] >>>
         msg = self.serializer.serialize_msg(command="getaddr")
         self.send(msg)
+
+        # Caller should call get_messages separately.
+        if not block:
+            return None
 
         # <<< [addr]..
         gevent.sleep(1)
